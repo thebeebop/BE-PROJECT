@@ -22,7 +22,16 @@ describe('GET /api', () => {
             .get('/api/topics')
             .expect(200)
             .then((res) => {
+                expect(res.body.topics).toBeInstanceOf(Array)
                 expect(res.body.topics.length).toBe(3)
+            
+                res.body.topics.forEach((topic) => {
+                    expect(topic).toEqual(expect.objectContaining( {
+                        slug: expect.any(String),
+                        description: expect.any(String)
+                    }))
+                })
+                
              })
              
         })
@@ -36,5 +45,20 @@ describe('GET /api', () => {
             })
         })
     })
+
+    // describe('/api/articles/:article_id', () => {
+    //     test('200: Returns the desired article when given an article_id ', () => {
+            
+    //         return request(app)
+    //         .get('/api/articles/3')
+    //         .expect(200)
+    //         .then((response) => {
+    //             ex
+
+    //         })
+            
+    //     });
+        
+    // });
 
 })

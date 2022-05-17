@@ -9,7 +9,9 @@ const app = express();
 
 
 
-app.get('/api/topics', getTopics )
+app.get('/api/topics', getTopics)
+
+
 
 
 
