@@ -16,8 +16,8 @@ afterAll(()=> {
 
 
 
-describe('GET /api', () => {
-    describe('/api/topics', () => {
+describe('/api', () => {
+    describe('GET /api/topics', () => {
         test('200: Returns an array of topic objects with the following properties: slug, description.', () => {
             return request(app)
             .get('/api/topics')
@@ -46,7 +46,7 @@ describe('GET /api', () => {
         })
     })
 
-    describe('/api/articles/:article_id', () => {
+    describe('GET /api/articles/:article_id', () => {
         test('200: Returns the desired article when given an article_id ', () => {
             
             return request(app)
@@ -84,4 +84,19 @@ describe('GET /api', () => {
         })
     });
 
+    describe('PATCH /api/articles/:article_id', () => {
+        test('201: Should update the relevant property by the given value of the specified id.', () => {
+
+            return request(app)
+            .patch('/api/articles/3')
+            .expect(201)
+            .send({inc_votes: 40})
+            .then((response) => {
+                expect(response.body.article).toEqual()
+
+            })
+            
+        });
+    });
 })
+

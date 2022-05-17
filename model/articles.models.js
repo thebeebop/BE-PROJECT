@@ -1,5 +1,5 @@
 const db = require('../db/connection')
-const pg = require('pg')
+
 
 exports.fetchArticlebyId = (id) => {
     return db.query('SELECT * FROM articles WHERE article_id = $1', [id])
@@ -9,7 +9,5 @@ exports.fetchArticlebyId = (id) => {
         } else {
         return response.rows[0]
         }
-
-
     })
 }
