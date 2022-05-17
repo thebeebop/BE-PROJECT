@@ -1,4 +1,3 @@
-const app = require("../app")
 const { fetchTopics } = require("../model/topics.model.js")
 
 exports.getTopics = (req, res, next) => {
@@ -11,6 +10,8 @@ exports.getTopics = (req, res, next) => {
         next(err)
     })
 }
+
+
 
 
 
