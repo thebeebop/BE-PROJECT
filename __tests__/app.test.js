@@ -169,11 +169,27 @@ describe('/api', () => {
             .expect(200)
             .then((response) => {
                 expect(response.body.users).toBeInstanceOf(Array)
+                expect(response.body.users.length).toBe(4)
+                response.body.users.forEach((user) => {
+                    expect(user).toEqual(expect.objectContaining( {
+                        username: expect.any(String),
+                        name: expect.any(String),
+                        avatar_url: expect.any(String)
+                    }))
+                    
+                })
+               
 
             })
             
         });
-        xtest('404: Respond with a 404 not found when given an unkown route.', () => {
+        test('404: Respond with a 404 not found when given an unkown route.', () => {
+            return request(app)
+            .get('/api/monkey')
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+            })
 
         })
     });
