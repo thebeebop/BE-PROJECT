@@ -64,6 +64,7 @@ describe('/api', () => {
                     votes: 0,
                 })
 
+
             })
             
         });
@@ -94,7 +95,7 @@ describe('/api', () => {
             .expect(200)
             .send(updateVote)
             .then((response) => {
-                expect(response.body.update).toEqual(
+                expect(response.body.article).toEqual(
                     {
                         article_id: 3,
                         title: "Eight pug gifs that remind me of mitch",
@@ -161,6 +162,7 @@ describe('/api', () => {
 
     });
 
+
     describe('GET /api/users', () => {
         test('200: Respond with an array of objects. Each object should have a property of "username".', () => {
 
@@ -193,5 +195,7 @@ describe('/api', () => {
 
         })
     });
+
 })
+
 
