@@ -193,5 +193,32 @@ describe('/api', () => {
 
         })
     });
+
+    describe('GET /api/articles/:article_id (comment count)', () => {
+
+        test('200: An article response object should now include the property "comment_count". ', () => {
+
+            request(app)
+            .get('/api/articles/4')
+            .expect(200)
+            .then((response) => {
+                expect(response.body.article).toEqual(
+                    {
+                    article_id: 3,
+                    title: "Eight pug gifs that remind me of mitch",
+                    topic: "mitch",
+                    author: "icellusedkars",
+                    body: "some gifs",
+                    created_at: '2020-11-03T09:12:00.000Z',
+                    votes: 0,
+                    comment_count: 20
+
+                    }
+                )
+            })
+            
+        });
+        
+    });
 })
 
