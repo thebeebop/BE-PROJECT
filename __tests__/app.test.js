@@ -85,13 +85,13 @@ describe('/api', () => {
     });
 
     describe('PATCH /api/articles/:article_id', () => {
-        test('201: Should update the relevant property by the given value of the specified id.', () => {
+        test('200: Should update the relevant property by the given value of the specified id.', () => {
 
             const updateVote = { inc_votes: 40 } 
 
             return request(app)
             .patch('/api/articles/3')
-            .expect(201)
+            .expect(200)
             .send(updateVote)
             .then((response) => {
                 expect(response.body.update).toEqual(
@@ -118,7 +118,7 @@ describe('/api', () => {
                 expect(response.body.msg).toEqual('Bad Request')
 
             })
-        })
+        });
         test('400: Given an incorrect data type, response with a 400: bad request ', () => {
             const wrongData = { inc_votes: 'vote' }
 
@@ -132,8 +132,50 @@ describe('/api', () => {
             })
             
         });
+        test('400: Returns "Bad Request" when trying to patch an article by an invalid article_id.', () => {
+            const updateVote = { inc_votes: 40 }
+
+            return request(app)
+            .patch('/api/articles/potato')
+            .expect(400)
+            .send(updateVote)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Bad Request')
+
+            })
+        });
+        test('404: Respond with a "not found" message when given an unkown article_id.', () => {
+
+            const updateVote = { inc_votes: 70 } 
+
+            return request(app)
+            .patch('/api/articles/5000')
+            .send(updateVote)
+            .then((response) => {
+                console.log(response.body)
+                expect(response.body.msg).toEqual('Not Found')
+
+            })
+        })
 
 
+    });
+
+    describe('GET /api/users', () => {
+        test('200: Respond with an array of objects. Each object should have a property of "username".', () => {
+
+            return request(app)
+            .get('/api/users')
+            .expect(200)
+            .then((response) => {
+                expect(response.body.users).toBeInstanceOf(Array)
+
+            })
+            
+        });
+        xtest('404: Respond with a 404 not found when given an unkown route.', () => {
+
+        })
     });
 })
 

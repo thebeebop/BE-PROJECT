@@ -20,7 +20,12 @@ exports.updateArticleById = (id, updateVoteBy) => {
     WHERE article_id = $2
     RETURNING *`, [updateVoteBy, id])
     .then((updatedArticle) => {
+        if (updatedArticle.rows.length === 0) {
+            return Promise.reject( { status: 404, msg: 'Not Found'})
+            
+        }
         return updatedArticle.rows[0]
 
     })
+    
 }
