@@ -221,5 +221,20 @@ describe('/api', () => {
             
         });
     })
+
+    describe('GET /api/articles', () => {
+        test('200: Should return an array of article objects, including the relevant properties + comment_count property. ', () => {
+
+            return request(app)
+            .get('/api/articles')
+            .expect(200)
+            .then((response) => {
+                expect(response.body.article).toBeInstanceOf(Array)
+
+            })
+            
+        });
+        
+    });
 });
 

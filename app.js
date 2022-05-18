@@ -14,22 +14,15 @@ app.get('/api/topics', getTopics)
 app.get('/api/articles/:article_id', getArticleById)
 
 app.get('/api/users', getUsers)
+app.get('/api/articles')
 
 app.patch('/api/articles/:article_id', patchArticleById)
 
 
 
 
-
-
-
-
-
-
-
-
-
 app.use('/*', (req, res) => {
+    console.log('app');
     res.status(404).send({ msg: 'Not Found'})
 })
 
