@@ -152,7 +152,6 @@ describe('/api', () => {
             .patch('/api/articles/5000')
             .send(updateVote)
             .then((response) => {
-                console.log(response.body)
                 expect(response.body.msg).toEqual('Not Found')
 
             })
@@ -194,14 +193,15 @@ describe('/api', () => {
         })
     });
 
-    describe('GET /api/articles/:article_id (comment count)', () => {
+    describe.only('GET /api/articles/:article_id (comment count)', () => {
 
         test('200: An article response object should now include the property "comment_count". ', () => {
 
             request(app)
-            .get('/api/articles/4')
+            .get('/api/articles/3')
             .expect(200)
             .then((response) => {
+                console.log(response.body.article)
                 expect(response.body.article).toEqual(
                     {
                     article_id: 3,
@@ -211,7 +211,7 @@ describe('/api', () => {
                     body: "some gifs",
                     created_at: '2020-11-03T09:12:00.000Z',
                     votes: 0,
-                    comment_count: 20
+                    comment_count: 2
 
                     }
                 )
