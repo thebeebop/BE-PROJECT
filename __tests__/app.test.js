@@ -162,6 +162,40 @@ describe('/api', () => {
 
     });
 
+
+    describe('GET /api/users', () => {
+        test('200: Respond with an array of objects. Each object should have a property of "username".', () => {
+
+            return request(app)
+            .get('/api/users')
+            .expect(200)
+            .then((response) => {
+                expect(response.body.users).toBeInstanceOf(Array)
+                expect(response.body.users.length).toBe(4)
+                response.body.users.forEach((user) => {
+                    expect(user).toEqual(expect.objectContaining( {
+                        username: expect.any(String),
+                        name: expect.any(String),
+                        avatar_url: expect.any(String)
+                    }))
+                    
+                })
+               
+
+            })
+            
+        });
+        test('404: Respond with a 404 not found when given an unkown route.', () => {
+            return request(app)
+            .get('/api/monkey')
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+            })
+
+        })
+    });
+
 })
 
 
