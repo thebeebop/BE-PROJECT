@@ -1,0 +1,7 @@
+SELECT articles.*
+COUNT(comment_id) AS comment_count
+FROM articles
+LEFT JOIN comments
+ON comments.aritcle_id = articles.article_id
+WHERE article_id = $1
+GROUP BY articles.article_id;

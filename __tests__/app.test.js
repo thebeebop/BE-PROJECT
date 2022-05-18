@@ -6,13 +6,9 @@ const app = require('../app.js')
 const seed = require('../db/seeds/seed')
 
 
-beforeEach(() => 
-    seed(testData)
-);
+beforeEach(() => seed(testData));
 
-afterAll(()=> {
-    db.end()
-    })
+afterAll(()=>  db.end());
 
 
 
@@ -48,25 +44,33 @@ describe('/api', () => {
 
     describe('GET /api/articles/:article_id', () => {
         test('200: Returns the desired article when given an article_id ', () => {
-            
             return request(app)
             .get('/api/articles/3')
             .expect(200)
             .then((response) => {
-                expect(response.body.article).toEqual(
-                {
-                    article_id: 3,
-                    title: "Eight pug gifs that remind me of mitch",
-                    topic: "mitch",
-                    author: "icellusedkars",
-                    body: "some gifs",
-                    created_at: '2020-11-03T09:12:00.000Z',
-                    votes: 0,
-                })
-
-            })
-            
+                expect(response.body.article).toEqual(expect.objectContaining(
+                    {
+                        article_id: 3,
+                        title: "Eight pug gifs that remind me of mitch",
+                        topic: "mitch",
+                        author: "icellusedkars",
+                        body: "some gifs",
+                        created_at: '2020-11-03T09:12:00.000Z',
+                        votes: 0,
+                    })
+                ) 
+            })  
         });
+        test('200: An article response object should now include the property "comment_count". ', () => {
+            return request(app)
+            .get('/api/articles/3')
+            .expect(200)
+            .then((response) => {
+                console.log(response.body.article)
+                expect(response.body.article).toHaveProperty('comment_count')})
+            })
+
+
         test('400: Given an invalid data-type, send the client a 400 bad request.', () => {
             return request(app)
             .get('/api/articles/silly')
@@ -83,7 +87,7 @@ describe('/api', () => {
             })
         })
     });
-
+       
     describe('PATCH /api/articles/:article_id', () => {
         test('200: Should update the relevant property by the given value of the specified id.', () => {
 
@@ -193,32 +197,29 @@ describe('/api', () => {
         })
     });
 
-    describe.only('GET /api/articles/:article_id (comment count)', () => {
-
-        test('200: An article response object should now include the property "comment_count". ', () => {
-
-            request(app)
+    describe('GET /api/articles/:article_id (comment count)' ,() => {
+        test('should return the articles object plus the comment_count property. ', () => {
+            return request(app)
             .get('/api/articles/3')
             .expect(200)
             .then((response) => {
-                console.log(response.body.article)
                 expect(response.body.article).toEqual(
                     {
-                    article_id: 3,
-                    title: "Eight pug gifs that remind me of mitch",
-                    topic: "mitch",
-                    author: "icellusedkars",
-                    body: "some gifs",
-                    created_at: '2020-11-03T09:12:00.000Z',
-                    votes: 0,
-                    comment_count: 2
+                        article_id: 3,
+                        title: "Eight pug gifs that remind me of mitch",
+                        topic: "mitch",
+                        author: "icellusedkars",
+                        body: "some gifs",
+                        created_at: '2020-11-03T09:12:00.000Z',
+                        votes: 0,
+                        comment_count: '2'
+                    } 
 
-                    }
                 )
+
             })
             
         });
-        
-    });
-})
+    })
+});
 
