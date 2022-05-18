@@ -212,7 +212,7 @@ describe('/api', () => {
                         body: "some gifs",
                         created_at: '2020-11-03T09:12:00.000Z',
                         votes: 0,
-                        comment_count: '2'
+                        comment_count: 2
                     } 
 
                 )

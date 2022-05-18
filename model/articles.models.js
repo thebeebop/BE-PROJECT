@@ -4,7 +4,7 @@ const db = require('../db/connection')
 exports.fetchArticlebyId = (id) => {
     return db.query(
     `SELECT articles.*,
-    COUNT(comment_id) AS comment_count
+    COUNT(comment_id)::int AS comment_count
     FROM articles
     LEFT JOIN comments
     ON comments.article_id = articles.article_id
