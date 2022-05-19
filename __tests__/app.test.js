@@ -48,6 +48,7 @@ describe('/api', () => {
             .get('/api/articles/3')
             .expect(200)
             .then((response) => {
+
                 expect(response.body.article).toEqual(expect.objectContaining(
                     {
                         article_id: 3,
@@ -60,6 +61,7 @@ describe('/api', () => {
                     })
                 ) 
             })  
+
         });
         test('200: An article response object should now include the property "comment_count". ', () => {
             return request(app)
@@ -97,7 +99,7 @@ describe('/api', () => {
             .expect(200)
             .send(updateVote)
             .then((response) => {
-                expect(response.body.update).toEqual(
+                expect(response.body.article).toEqual(
                     {
                         article_id: 3,
                         title: "Eight pug gifs that remind me of mitch",
@@ -163,6 +165,7 @@ describe('/api', () => {
 
     });
 
+
     describe('GET /api/users', () => {
         test('200: Respond with an array of objects. Each object should have a property of "username".', () => {
 
@@ -195,6 +198,7 @@ describe('/api', () => {
 
         })
     });
+
 
     describe('GET /api/articles/:article_id (comment count)' ,() => {
         test('should return the articles object plus the comment_count property. ', () => {
@@ -257,4 +261,6 @@ describe('/api', () => {
         });
     });
 });
+
+
 

@@ -33,6 +33,7 @@ exports.fetchArticlebyId = (id) => {
     .then((response) => {
         console.log(response.rows, '<<<<fetcharticlebyid')
         if (response.rows.length === 0) {
+
            return Promise.reject({ status: 404, msg: 'Not Found'})
         } else {
         return response.rows[0]
@@ -44,7 +45,7 @@ exports.fetchArticlebyId = (id) => {
 exports.updateArticleById = (id, updateVoteBy) => {
     return db.query(
     `UPDATE articles
-    SET votes = $1
+    SET votes = votes + $1
     WHERE article_id = $2
     RETURNING *`, [updateVoteBy, id])
     .then((updatedArticle) => {
