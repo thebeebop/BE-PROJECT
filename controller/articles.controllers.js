@@ -50,6 +50,9 @@ exports.patchArticleById = (req, res, next) => {
      const commentBody = req.body
      addComment(articleId, commentBody).then((comment) => {
          res.status(201).send(comment)
-         
+        })
+        .catch((err) => {
+         console.log(err)
+         next(err)
      })
  }

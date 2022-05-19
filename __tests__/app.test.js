@@ -122,7 +122,7 @@ describe('/api', () => {
 
             })
         });
-        test('400: Given an incorrect data type, response with a 400: bad request ', () => {
+        test('400: Given an incorrect data type, respond with a 400: bad request ', () => {
             const wrongData = { inc_votes: 'vote' }
 
             return request(app)
@@ -171,7 +171,7 @@ describe('/api', () => {
             .expect(200)
             .then((response) => {
                 expect(response.body.users).toBeInstanceOf(Array)
-                expect(response.body.users.length).toBe(4)
+                expect(response.body.users.length).toBe(5)
                 response.body.users.forEach((user) => {
                     expect(user).toEqual(expect.objectContaining( {
                         username: expect.any(String),
@@ -313,7 +313,7 @@ describe('/api', () => {
 
             const comment =
             {
-                author: 'icellusedkars',
+                author: 'thebeebop',
                 body: 'If you are reading this then you are a... fine example of a human being!'
             }
 
@@ -322,12 +322,11 @@ describe('/api', () => {
            .expect(201)
            .send(comment)
            .then((response) => {
-               console.log(response.body);
                expect(response.body).toEqual( 
                 {
                    comment_id: expect.any(Number),
                    body: 'If you are reading this then you are a... fine example of a human being!',
-                   author: 'icellusedkars',
+                   author: 'thebeebop',
                    article_id: 10,
                    votes: expect.any(Number),
                    created_at: expect.any(String)
@@ -337,8 +336,67 @@ describe('/api', () => {
 
            })
          });
-         test('404: Given an invalid data-type for article-ID, respond with a "bad request" message.', () => {
-             request(app).
+         test('400: Given a malformed body, respond with a 400 bad request.', () => {
+
+            const badComment = {};
+            return request(app)
+            .post('/api/articles/10/comments')
+            .expect(400)
+            .send(badComment)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Bad Request')
+            })
+         })
+         test('400: Given an incorrect data-type in object, respond with a 400 bad request.', () => {
+
+            const badComment =
+            {
+                author: 56,
+                body: 'If you are reading this then you are a... fine example of a human being!'
+            }
+
+             return request(app)
+             .post('/api/articles/10/comments')
+             .expect(400)
+             .send(badComment)
+             .then((response) => {
+                 expect(response.body.msg).toEqual('Bad Request')
+
+             })
+         })
+         test('400: Given an invalid ID, respond with a 400 bad request.', () => {
+
+            const comment =
+            {
+                author: 'thebeebop',
+                body: 'If you are reading this then you are a... fine example of a human being!'
+            }
+
+             return request(app)
+             .post('/api/articles/mario/comments')
+             .expect(400)
+             .send(comment)
+             .then((response) => {
+                 expect(response.body.msg).toEqual('Bad Request')
+
+             })
+         })
+         test.only('404: Given a valid ID type, but out of range, respond with a 404 not found.', () => {
+
+            const comment =
+            {
+                author: 'thebeebop',
+                body: 'If you are reading this then you are a... fine example of a human being!'
+            }
+
+            return request(app)
+            .post('/api/articles/90/comments')
+            .expect(404)
+            .send(comment)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+
+            })
          })
     });
 
