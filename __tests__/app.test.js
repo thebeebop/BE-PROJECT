@@ -66,7 +66,6 @@ describe('/api', () => {
             .get('/api/articles/3')
             .expect(200)
             .then((response) => {
-                console.log(response.body.article)
                 expect(response.body.article).toHaveProperty('comment_count')})
             })
 
@@ -212,7 +211,7 @@ describe('/api', () => {
                         body: "some gifs",
                         created_at: '2020-11-03T09:12:00.000Z',
                         votes: 0,
-                        comment_count: '2'
+                        comment_count: 2
                     } 
 
                 )
@@ -223,18 +222,39 @@ describe('/api', () => {
     })
 
     describe('GET /api/articles', () => {
-        test('200: Should return an array of article objects, including the relevant properties + comment_count property. ', () => {
+        test('200: Should return an array of article objects, including the relevant properties + comment_count property, sorted by date in descending order. ', () => {
 
             return request(app)
             .get('/api/articles')
             .expect(200)
             .then((response) => {
-                expect(response.body.article).toBeInstanceOf(Array)
+                expect(response.body.articles).toBeInstanceOf(Array)
+                expect(response.body.articles.length).toBe(12)
+                response.body.articles.forEach((article) => {
+                    expect(article).toEqual(expect.objectContaining({
+                        article_id: expect.any(Number),
+                        title: expect.any(String),
+                        topic: expect.any(String),
+                        author: expect.any(String),
+                        body: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(Number)
+                    }))
+                })
+            })
+        });
+        test('404: Return a message "not found" if an unkown route is requested. ', () => {
+
+            return request(app)
+            .get('/api/donkeys')
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
 
             })
             
         });
-        
     });
 });
 

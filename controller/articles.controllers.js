@@ -1,9 +1,13 @@
-const { fetchArticlebyId, updateArticleById } = require('../model/articles.models')
+const { fetchArticlebyId, updateArticleById, fetchArticle } = require('../model/articles.models')
 
 
 
 
-exports.getArticle = () => {}
+exports.getArticle = (req, res, next) => {
+    fetchArticle().then((articles) => {
+        res.status(200).send({ articles })
+    })
+}
 
 
 
@@ -15,7 +19,6 @@ exports.getArticleById = (req, res, next) => {
          res.status(200).send({ article })
     })
     .catch((err) => {
-        console.log(err)
         next(err)
     })
 }
