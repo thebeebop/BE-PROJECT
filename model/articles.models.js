@@ -3,7 +3,7 @@ const db = require('../db/connection')
 
 
 
-exports.fetchArticle = () => {
+exports.fetchArticles = () => {
     return db.query(
         `SELECT articles.*,
         COUNT(comment_id)::int AS comment_count
@@ -61,10 +61,6 @@ exports.fetchCommentsByArticleId = (articleId) => {
         `SELECT * FROM comments
          WHERE article_id = $1`, [articleId]).then((comments) => {
             console.log(comments.rows)
-             if (comments.rows.length === 0) {
-                 return Promise.reject({ status: 404, msg: 'Not Found'})
-             } else {
              return comments.rows
-             }
          })
 }
