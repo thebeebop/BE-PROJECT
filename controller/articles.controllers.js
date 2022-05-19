@@ -44,3 +44,5 @@ exports.patchArticleById = (req, res, next) => {
         next(err)
     })
  } 
+
+ exports.postCommentByArticleId = (req, res, next) => {}

@@ -20,6 +20,8 @@ app.get('/api/articles', getArticle)
 
 app.patch('/api/articles/:article_id', patchArticleById)
 
+app.post('/api/articles/10/comments')
+
 
 
 
