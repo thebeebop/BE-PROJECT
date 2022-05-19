@@ -69,7 +69,12 @@ exports.fetchCommentsByArticleId = (articleId) => {
 }
 
 exports.addComment = (articleId, comment) => {
+    console.log(comment, '<<<<< comment')
     return db.query(`
-    INSERT INTO comments (body, author, article_id)`,
-    [comment.body, comment.author, articleId, ])
+    INSERT INTO comments (body, author users, article_id)
+    VALUES ($1, $2, $3)
+    RETURNING *;`,
+    [comment.body, comment.author, articleId]).then((response) => {
+        console.log(response.rows[0], '<<<<response.rows')
+    })
 }

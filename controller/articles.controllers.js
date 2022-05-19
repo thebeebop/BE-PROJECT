@@ -47,8 +47,8 @@ exports.patchArticleById = (req, res, next) => {
 
  exports.postCommentByArticleId = (req, res, next) => {
      const articleId = req.params.article_id
-     console.log(articleId);
      const commentBody = req.body
-     console.log(commentBody, '<<<<body');
-     addComment(articleId)
+     addComment(articleId, commentBody).then(() => {
+         
+     })
  }
