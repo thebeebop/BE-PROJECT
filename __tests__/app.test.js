@@ -256,5 +256,30 @@ describe('/api', () => {
             
         });
     });
+
+    describe('GET /api/articles/:article_id/comments', () => {
+        test('200: Returns an array of comments for the given article_id. ', () => {
+            return request(app)
+            .get('/api/articles/5/comments')
+            .expect(200)
+            .then((response) => {
+                expect(response.body.comments).toBeInstanceOf(Array)
+                expect(response.body.comments.length).toBe(2)
+                response.body.comments.forEach((comment) => {
+                    expect(comment).toEqual(expect.objectContaining({
+                        comment_id: expect.any(Number),
+                        body: expect.any(String),
+                        votes: expect.any(String),
+                        author: expect.any(String),
+                        article_id: expect.any(Number),
+                        created_at: expect.any(String)
+
+                    }))
+
+                })
+            })
+            
+        });
+    })
 });
 

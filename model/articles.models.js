@@ -13,11 +13,9 @@ exports.fetchArticle = () => {
         GROUP BY articles.article_id
         ORDER BY created_at DESC;`)
     .then((response) => {
-        console.log(response.rows)
        return response.rows
     })
 }
-
 
 
 
@@ -31,7 +29,6 @@ exports.fetchArticlebyId = (id) => {
     WHERE articles.article_id = $1
     GROUP BY articles.article_id;`, [id])
     .then((response) => {
-        console.log(response.rows, '<<<<fetcharticlebyid')
         if (response.rows.length === 0) {
            return Promise.reject({ status: 404, msg: 'Not Found'})
         } else {
@@ -57,3 +54,6 @@ exports.updateArticleById = (id, updateVoteBy) => {
     })
     
 }
+
+
+exports.fetchCommentsByArticleId = () => {}

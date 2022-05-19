@@ -10,9 +10,6 @@ exports.getArticle = (req, res, next) => {
 }
 
 
-
-
-
 exports.getArticleById = (req, res, next) => {
     const id = req.params.article_id;
     fetchArticlebyId(id).then((article) => {
@@ -33,4 +30,8 @@ exports.patchArticleById = (req, res, next) => {
     .catch((err) => {
         next(err)
     })
+}
+
+exports.getCommentsbyArticleId = (req, res, next) = {
+   
 }
