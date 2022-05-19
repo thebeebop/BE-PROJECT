@@ -260,6 +260,64 @@ describe('/api', () => {
             
         });
     });
+
+    describe('GET /api/articles/:article_id/comments', () => {
+        test('200: Returns an array of comments for the given article_id. ', () => {
+            return request(app)
+            .get('/api/articles/5/comments')
+            .expect(200)
+            .then((response) => {
+                expect(response.body.comments).toBeInstanceOf(Array)
+                expect(response.body.comments.length).toBe(2)
+                response.body.comments.forEach((comment) => {
+                    expect(comment).toEqual(expect.objectContaining({
+                        comment_id: expect.any(Number),
+                        body: expect.any(String),
+                        votes: expect.any(Number),
+                        author: expect.any(String),
+                        article_id: expect.any(Number),
+                        created_at: expect.any(String)
+
+                    }))
+
+                })
+            })
+            
+        });
+        test('200: Valid Article ID, valid article but no existing comments.', () => {
+            return request(app)
+            .get('/api/articles/10/comments')
+            .expect(200)
+            .then((response) => {
+                expect(response.body.comments).toEqual([])
+             })
+        })
+        test('400: Given an incorrect data type, return message "Bad Request', () => {
+            return request(app)
+            .get('/api/articles/kingkong/comments')
+            .expect(400)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Bad Request')
+            })
+        })
+        test('404: Valid ID but does not exist yet.', () => {
+            return request(app)
+            .get('/api/articles/9999/comments')
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+            })
+        })
+        test('404: Given a valid ID but incorrect end path.', () => {
+            request(app)
+            .get('/api/articles/5/bananas')
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+
+            })
+        })
+    })
 });
 
 
