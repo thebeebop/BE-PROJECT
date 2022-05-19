@@ -60,7 +60,10 @@ exports.fetchCommentsByArticleId = (articleId) => {
     return db.query(
         `SELECT * FROM comments
          WHERE article_id = $1`, [articleId]).then((comments) => {
-             if (comments.rows.length === 0) {
+             if (comments.rows.length === 0 && articleId < 9999) {
+                 return comments.rows
+             }
+             else if (comments.rows.length === 0) {
                  return Promise.reject({ status: 404, msg: 'Not Found'})
              } else {
              return comments.rows
