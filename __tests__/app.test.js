@@ -280,14 +280,6 @@ describe('/api', () => {
             })
             
         });
-        test('200: Valid Article ID, valid article but no existing comments.', () => {
-            return request(app)
-            .get('/api/articles/10/comments')
-            .expect(200)
-            .then((response) => {
-                expect(response.body.comments).toEqual([])
-
-            })
         })
         test('400: Given an incorrect data type, return message "Bad Request', () => {
             return request(app)
