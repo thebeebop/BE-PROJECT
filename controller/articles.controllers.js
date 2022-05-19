@@ -1,4 +1,4 @@
-const { fetchArticlebyId, updateArticleById, fetchArticle, fetchCommentsByArticleId } = require('../model/articles.models')
+const { fetchArticlebyId, updateArticleById, fetchArticle, fetchCommentsByArticleId, addComment } = require('../model/articles.models')
 
 
 
@@ -45,4 +45,10 @@ exports.patchArticleById = (req, res, next) => {
     })
  } 
 
- exports.postCommentByArticleId = (req, res, next) => {}
+ exports.postCommentByArticleId = (req, res, next) => {
+     const articleId = req.params.article_id
+     console.log(articleId);
+     const commentBody = req.body
+     console.log(commentBody, '<<<<body');
+     addComment(articleId)
+ }

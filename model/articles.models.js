@@ -67,3 +67,9 @@ exports.fetchCommentsByArticleId = (articleId) => {
              }
          })
 }
+
+exports.addComment = (articleId, comment) => {
+    return db.query(`
+    INSERT INTO comments (body, author, article_id)`,
+    [comment.body, comment.author, articleId, ])
+}

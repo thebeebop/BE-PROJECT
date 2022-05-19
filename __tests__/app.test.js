@@ -308,7 +308,7 @@ describe('/api', () => {
         })
     })
 
-    describe('POST /api/articles/:article_id/comments', () => {
+    describe.only('POST /api/articles/:article_id/comments', () => {
         test('200: Request takes an object of a username and a body property. Reponds with the posted comment. ', () => {
 
             const comment =
@@ -337,5 +337,4 @@ describe('/api', () => {
            })
          });
     });
-});
 
