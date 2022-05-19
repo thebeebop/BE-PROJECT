@@ -3,7 +3,7 @@ const db = require('../db/connection')
 
 
 
-exports.fetchArticle = () => {
+exports.fetchArticles = () => {
     return db.query(
         `SELECT articles.*,
         COUNT(comment_id)::int AS comment_count
@@ -13,6 +13,7 @@ exports.fetchArticle = () => {
         GROUP BY articles.article_id
         ORDER BY created_at DESC;`)
     .then((response) => {
+        console.log(response.rows)
        return response.rows
     })
 }
@@ -69,12 +70,12 @@ exports.fetchCommentsByArticleId = (articleId) => {
 }
 
 exports.addComment = (articleId, comment) => {
-    console.log(comment, '<<<<< comment')
+    const { body, author } = comment
     return db.query(`
-    INSERT INTO comments (body, author users, article_id)
+    INSERT INTO comments (body, author, article_id)
     VALUES ($1, $2, $3)
     RETURNING *;`,
-    [comment.body, comment.author, articleId]).then((response) => {
-        console.log(response.rows[0], '<<<<response.rows')
+    [body, author, articleId]).then((response) => {
+        return response.rows[0]
     })
 }

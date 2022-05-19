@@ -308,13 +308,13 @@ describe('/api', () => {
         })
     })
 
-    describe.only('POST /api/articles/:article_id/comments', () => {
-        test('200: Request takes an object of a username and a body property. Reponds with the posted comment. ', () => {
+    describe('POST /api/articles/:article_id/comments', () => {
+        test('201: Request takes an object of a username and a body property. Reponds with the posted comment. ', () => {
 
             const comment =
             {
-                author: 'TheBeebop',
-                body: 'If you are reading this then you are a... fine example of a human being! '
+                author: 'icellusedkars',
+                body: 'If you are reading this then you are a... fine example of a human being!'
             }
 
            return request(app)
@@ -322,11 +322,12 @@ describe('/api', () => {
            .expect(201)
            .send(comment)
            .then((response) => {
-               expect(response.body.comment).toEqual( 
+               console.log(response.body);
+               expect(response.body).toEqual( 
                 {
                    comment_id: expect.any(Number),
                    body: 'If you are reading this then you are a... fine example of a human being!',
-                   author: 'TheBeebop',
+                   author: 'icellusedkars',
                    article_id: 10,
                    votes: expect.any(Number),
                    created_at: expect.any(String)
@@ -336,5 +337,8 @@ describe('/api', () => {
 
            })
          });
+         test('404: Given an invalid data-type for article-ID, respond with a "bad request" message.', () => {
+             request(app).
+         })
     });
 
