@@ -269,7 +269,7 @@ describe('/api', () => {
                     expect(comment).toEqual(expect.objectContaining({
                         comment_id: expect.any(Number),
                         body: expect.any(String),
-                        votes: expect.any(String),
+                        votes: expect.any(Number),
                         author: expect.any(String),
                         article_id: expect.any(Number),
                         created_at: expect.any(String)
@@ -280,6 +280,31 @@ describe('/api', () => {
             })
             
         });
+        test('400: Given an incorrect data type, return message "Bad Request', () => {
+            return request(app)
+            .get('/api/articles/kingkong/comments')
+            .expect(400)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Bad Request')
+            })
+        })
+        test('404: Valid ID but does not exist yet.', () => {
+            return request(app)
+            .get('/api/articles/9999/comments')
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+            })
+        })
+        test('404: Given a valid ID but incorrect end path.', () => {
+            request(app)
+            .get('/api/articles/5/bananas')
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+
+            })
+        })
     })
 });
 
