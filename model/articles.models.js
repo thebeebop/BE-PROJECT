@@ -1,6 +1,26 @@
 const db = require('../db/connection')
 
 
+
+
+exports.fetchArticle = () => {
+    return db.query(
+        `SELECT articles.*,
+        COUNT(comment_id)::int AS comment_count
+        FROM articles
+        LEFT JOIN comments
+        ON comments.article_id = articles.article_id
+        GROUP BY articles.article_id
+        ORDER BY created_at DESC;`)
+    .then((response) => {
+        console.log(response.rows)
+       return response.rows
+    })
+}
+
+
+
+
 exports.fetchArticlebyId = (id) => {
     return db.query(
     `SELECT articles.*,
@@ -11,6 +31,7 @@ exports.fetchArticlebyId = (id) => {
     WHERE articles.article_id = $1
     GROUP BY articles.article_id;`, [id])
     .then((response) => {
+        console.log(response.rows, '<<<<fetcharticlebyid')
         if (response.rows.length === 0) {
 
            return Promise.reject({ status: 404, msg: 'Not Found'})
