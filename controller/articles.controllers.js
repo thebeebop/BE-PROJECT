@@ -13,8 +13,6 @@ exports.getArticles = (req, res, next) => {
 exports.getArticleById = (req, res, next) => {
     const id = req.params.article_id;
 
-
-
     fetchArticlebyId(id).then((article) => {
          res.status(200).send({ article })
     })
@@ -34,11 +32,10 @@ exports.patchArticleById = (req, res, next) => {
     .catch((err) => {
         next(err)
     })
-
 }
 
 
- exports.getCommentsByArticleId = (req, res, next) => {
+exports.getCommentsByArticleId = (req, res, next) => {
     const articleId = req.params.article_id
     fetchArticlebyId(articleId).then(() => {
         return fetchCommentsByArticleId(articleId)

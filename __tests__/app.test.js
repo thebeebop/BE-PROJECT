@@ -284,7 +284,7 @@ describe('/api', () => {
             })
             
         });
-        test('200: Valid Article ID, valid article but no existing comments.', () => {
+        test('200: Valid Article ID, valid article, but no existing comments.', () => {
             return request(app)
             .get('/api/articles/10/comments')
             .expect(200)
@@ -300,7 +300,7 @@ describe('/api', () => {
                 expect(response.body.msg).toEqual('Bad Request')
             })
         })
-        test('404: Valid ID but does not exist yet.', () => {
+        test('404: Valid ID but articleID does not yet exist.', () => {
             return request(app)
             .get('/api/articles/9999/comments')
             .expect(404)
