@@ -75,10 +75,7 @@ exports.addComment = (articleId, comment) => {
     VALUES ($1, $2, $3)
     RETURNING *;`,
     [body, author, articleId]).then((response) => {
-        console.log(response.rows[0], '<<<models')
-        // if (response.rows[0].length === 0) {
-        //     return Promise.reject({ status: 404, msg: 'Not Found'})
-        // }
+       
         return response.rows[0]
     })
 }

@@ -280,7 +280,7 @@ describe('/api', () => {
             })
             
         });
-        })
+        
         test('400: Given an incorrect data type, return message "Bad Request', () => {
             return request(app)
             .get('/api/articles/kingkong/comments')
@@ -307,6 +307,7 @@ describe('/api', () => {
             })
         })
     })
+    
 
     describe('POST /api/articles/:article_id/comments', () => {
         test('201: Request takes an object of a username and a body property. Reponds with the posted comment. ', () => {
@@ -381,7 +382,7 @@ describe('/api', () => {
 
              })
          })
-         test.only('404: Given a valid ID type, but out of range, respond with a 404 not found.', () => {
+         test('400: Given a valid articleID that does not exist, respond with a 400 bad request message.', () => {
 
             const comment =
             {
@@ -391,12 +392,13 @@ describe('/api', () => {
 
             return request(app)
             .post('/api/articles/90/comments')
-            .expect(404)
+            .expect(400)
             .send(comment)
             .then((response) => {
-                expect(response.body.msg).toEqual('Not Found')
+                expect(response.body.msg).toEqual('Bad Request')
 
             })
          })
     });
 
+})
