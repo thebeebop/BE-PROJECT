@@ -403,7 +403,7 @@ describe('/api', () => {
 
     describe('GET /api/articles (queries)', () => {
         test('200: Return an array of article objects sorted by any valid column (defaults to date).', () => {
-            return request(app).get('/api/articles/?sortby=')
+            return request(app).get('/api/articles/?sort_by=votes')
         })
         
     });

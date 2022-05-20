@@ -4,6 +4,7 @@ const { fetchArticlebyId, updateArticleById, fetchArticles, fetchCommentsByArtic
 
 
 exports.getArticles = (req, res, next) => {
+    const { sort_by } =  req.query
     fetchArticles().then((articles) => {
         res.status(200).send({ articles })
     })
