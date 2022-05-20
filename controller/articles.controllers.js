@@ -48,10 +48,13 @@ exports.patchArticleById = (req, res, next) => {
  exports.postCommentByArticleId = (req, res, next) => {
      const articleId = req.params.article_id
      const commentBody = req.body
-     addComment(articleId, commentBody).then((comment) => {
-         res.status(201).send(comment)
-        })
-        .catch((err) => {
+     const user = req.body.author
+     fetchArticlebyId(articleId).then(() => {
+        return addComment(articleId, commentBody).then((comment) => {
+            res.status(201).send(comment)
+           })
+     })
+     .catch((err) => {
          next(err)
      })
  }

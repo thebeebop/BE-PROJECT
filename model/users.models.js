@@ -8,3 +8,7 @@ exports.fetchUsers = () => {
 
     })
 }
+
+exports.fetchUsersById = (username) => {
+    
+}

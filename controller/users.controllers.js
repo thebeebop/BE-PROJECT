@@ -10,3 +10,7 @@ exports.getUsers = (req, res, next) => {
 
     })
 }
+
+exports.getUserbyID = (req, res, next) => {
+    const username = req.params
+}

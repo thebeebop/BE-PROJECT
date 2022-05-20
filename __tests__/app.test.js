@@ -348,23 +348,6 @@ describe('/api', () => {
                 expect(response.body.msg).toEqual('Bad Request')
             })
          })
-         test('400: Given an incorrect data-type in object, respond with a 400 bad request.', () => {
-
-            const badComment =
-            {
-                author: 56,
-                body: 'If you are reading this then you are a... fine example of a human being!'
-            }
-
-             return request(app)
-             .post('/api/articles/10/comments')
-             .expect(400)
-             .send(badComment)
-             .then((response) => {
-                 expect(response.body.msg).toEqual('Bad Request')
-
-             })
-         })
          test('400: Given an invalid ID, respond with a 400 bad request.', () => {
 
             const comment =
@@ -382,7 +365,7 @@ describe('/api', () => {
 
              })
          })
-         test('400: Given a valid articleID that does not exist, respond with a 400 bad request message.', () => {
+         test('404: Given a valid articleID that does not exist, respond with a 404 "not found".', () => {
 
             const comment =
             {
@@ -392,12 +375,27 @@ describe('/api', () => {
 
             return request(app)
             .post('/api/articles/90/comments')
-            .expect(400)
+            .expect(404)
             .send(comment)
             .then((response) => {
-                expect(response.body.msg).toEqual('Bad Request')
+                expect(response.body.msg).toEqual('Not Found')
 
             })
+         })
+         test('404: Username is a valid data-type, but user does not exist in the db.', () => {
+
+            const comment =
+            {
+                author: 'SpagYeti',
+                body: 'The Yeti of Spaghetti.'
+            }
+             return request(app)
+             .post('/api/articles/10/comments')
+             .expect(404)
+             .send(comment)
+             .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+             })
          })
     });
 
