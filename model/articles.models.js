@@ -62,6 +62,21 @@ exports.fetchCommentsByArticleId = (articleId) => {
         `SELECT * FROM comments
          WHERE article_id = $1`, [articleId]).then((comments) => {
              return comments.rows
+             
          })
+
+}
+
+
+exports.addComment = (articleId, comment) => {
+    const { body, author } = comment
+    return db.query(`
+    INSERT INTO comments (body, author, article_id)
+    VALUES ($1, $2, $3)
+    RETURNING *;`,
+    [body, author, articleId]).then((response) => {
+       
+        return response.rows[0]
+    })
 }
 

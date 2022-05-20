@@ -124,7 +124,7 @@ describe('/api', () => {
 
             })
         });
-        test('400: Given an incorrect data type, response with a 400: bad request ', () => {
+        test('400: Given an incorrect data type, respond with a 400: bad request ', () => {
             const wrongData = { inc_votes: 'vote' }
 
             return request(app)
@@ -174,7 +174,7 @@ describe('/api', () => {
             .expect(200)
             .then((response) => {
                 expect(response.body.users).toBeInstanceOf(Array)
-                expect(response.body.users.length).toBe(4)
+                expect(response.body.users.length).toBe(5)
                 response.body.users.forEach((user) => {
                     expect(user).toEqual(expect.objectContaining( {
                         username: expect.any(String),
@@ -284,6 +284,9 @@ describe('/api', () => {
             })
             
         });
+
+        
+
         test('200: Valid Article ID, valid article, but no existing comments.', () => {
             return request(app)
             .get('/api/articles/10/comments')
@@ -292,6 +295,7 @@ describe('/api', () => {
                 expect(response.body.comments).toEqual([])
              })
         })
+
         test('400: Given an incorrect data type, return message "Bad Request', () => {
             return request(app)
             .get('/api/articles/kingkong/comments')
@@ -318,7 +322,98 @@ describe('/api', () => {
             })
         })
     })
-});
+    
+
+    describe('POST /api/articles/:article_id/comments', () => {
+        test('201: Request takes an object of a username and a body property. Reponds with the posted comment. ', () => {
+
+            const comment =
+            {
+                author: 'thebeebop',
+                body: 'If you are reading this then you are a... fine example of a human being!'
+            }
+
+           return request(app)
+           .post('/api/articles/10/comments')
+           .expect(201)
+           .send(comment)
+           .then((response) => {
+               expect(response.body).toEqual( 
+                {
+                   comment_id: expect.any(Number),
+                   body: 'If you are reading this then you are a... fine example of a human being!',
+                   author: 'thebeebop',
+                   article_id: 10,
+                   votes: expect.any(Number),
+                   created_at: expect.any(String)
+
+               })
+               
+
+           })
+         });
+         test('400: Given a malformed body, respond with a 400 bad request.', () => {
+
+            const badComment = {};
+            return request(app)
+            .post('/api/articles/10/comments')
+            .expect(400)
+            .send(badComment)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Bad Request')
+            })
+         })
+         test('400: Given an invalid ID, respond with a 400 bad request.', () => {
+
+            const comment =
+            {
+                author: 'thebeebop',
+                body: 'If you are reading this then you are a... fine example of a human being!'
+            }
+
+             return request(app)
+             .post('/api/articles/mario/comments')
+             .expect(400)
+             .send(comment)
+             .then((response) => {
+                 expect(response.body.msg).toEqual('Bad Request')
+
+             })
+         })
+         test('404: Given a valid articleID that does not exist, respond with a 404 "not found".', () => {
+
+            const comment =
+            {
+                author: 'thebeebop',
+                body: 'If you are reading this then you are a... fine example of a human being!'
+            }
+
+            return request(app)
+            .post('/api/articles/90/comments')
+            .expect(404)
+            .send(comment)
+            .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+
+            })
+         })
+         test('404: Username is a valid data-type, but user does not exist in the db.', () => {
+
+            const comment =
+            {
+                author: 'SpagYeti',
+                body: 'The Yeti of Spaghetti.'
+            }
+             return request(app)
+             .post('/api/articles/10/comments')
+             .expect(404)
+             .send(comment)
+             .then((response) => {
+                expect(response.body.msg).toEqual('Not Found')
+             })
+         })
+    });
 
 
+})
 
