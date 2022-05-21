@@ -1,0 +1,13 @@
+ let queryStr = 
+    `SELECT articles.*,
+    COUNT(comment_id)::int AS comment_count
+    FROM articles
+    LEFT JOIN comments
+    ON comments.article_id = articles.article_id
+    GROUP BY articles.article_id`
+
+    if (sort_by) {
+        queryStr += sort_by
+        queryStr += ' DESC'
+    }
+    console.log(queryStr);
