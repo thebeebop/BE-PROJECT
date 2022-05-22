@@ -92,6 +92,7 @@ exports.fetchArticlebyId = (id) => {
       [id]
     )
     .then((response) => {
+
       if (response.rows.length === 0) {
         return Promise.reject({ status: 404, msg: "Not Found" });
       } else {
@@ -105,6 +106,7 @@ exports.updateArticleById = (id, updateVoteBy) => {
     .query(
       `UPDATE articles
     SET votes = $1
+
     WHERE article_id = $2
     RETURNING *`,
       [updateVoteBy, id]
@@ -118,6 +120,7 @@ exports.updateArticleById = (id, updateVoteBy) => {
 };
 
 exports.fetchCommentsByArticleId = (articleId) => {
+
   return db
     .query(
       `SELECT * FROM comments
@@ -129,6 +132,7 @@ exports.fetchCommentsByArticleId = (articleId) => {
     });
 };
 
+
 exports.addComment = (articleId, comment) => {
   const { body, author } = comment;
   return db
@@ -137,9 +141,11 @@ exports.addComment = (articleId, comment) => {
     INSERT INTO comments (body, author, article_id)
     VALUES ($1, $2, $3)
     RETURNING *;`,
+
       [body, author, articleId]
     )
     .then((response) => {
       return response.rows[0];
     });
 };
+

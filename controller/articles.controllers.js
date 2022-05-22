@@ -1,3 +1,4 @@
+
 const { checkExists } = require("../db/helpers/utils");
 const {
   fetchArticlebyId,
@@ -6,6 +7,7 @@ const {
   fetchCommentsByArticleId,
   addComment,
 } = require("../model/articles.models");
+
 
 exports.getArticles = (req, res, next) => {
   const { author, topic } = req.query;
@@ -41,6 +43,7 @@ exports.getArticles = (req, res, next) => {
 };
 
 exports.getArticleById = (req, res, next) => {
+
   const id = req.params.article_id;
   fetchArticlebyId(id)
     .then((article) => {
@@ -63,6 +66,7 @@ exports.patchArticleById = (req, res, next) => {
     });
 };
 
+
 exports.getCommentsByArticleId = (req, res, next) => {
   const articleId = req.params.article_id;
   fetchArticlebyId(articleId)
@@ -76,6 +80,7 @@ exports.getCommentsByArticleId = (req, res, next) => {
     });
 };
 
+
 exports.postCommentByArticleId = (req, res, next) => {
   const articleId = req.params.article_id;
   const commentBody = req.body;
@@ -87,3 +92,4 @@ exports.postCommentByArticleId = (req, res, next) => {
       next(err);
     });
 };
+

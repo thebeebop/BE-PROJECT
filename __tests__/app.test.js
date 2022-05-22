@@ -34,6 +34,7 @@ describe("/api", () => {
         .expect(404)
         .then((response) => {
           expect(response.body.msg).toBe("Not Found");
+
         });
     });
   });
@@ -66,6 +67,7 @@ describe("/api", () => {
         });
     });
 
+
     test("400: Given an invalid data-type, send the client a 400 bad request.", () => {
       return request(app)
         .get("/api/articles/silly")
@@ -80,6 +82,7 @@ describe("/api", () => {
         .expect(404)
         .then((response) => {
           expect(response.body.msg).toEqual("Not Found");
+
         });
     });
   });
@@ -253,6 +256,7 @@ describe("/api", () => {
           });
         });
     });
+
 
     test('400: Given an incorrect data type, return message "Bad Request', () => {
       return request(app)
