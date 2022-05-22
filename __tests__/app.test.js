@@ -320,20 +320,7 @@ describe("/api", () => {
           expect(response.body.msg).toEqual("Bad Request");
         });
     });
-    test("400: Given an incorrect data-type in object, respond with a 400 bad request.", () => {
-      const badComment = {
-        author: 56,
-        body: "If you are reading this then you are a... fine example of a human being!",
-      };
 
-      return request(app)
-        .post("/api/articles/10/comments")
-        .expect(400)
-        .send(badComment)
-        .then((response) => {
-          expect(response.body.msg).toEqual("Bad Request");
-        });
-    });
     test("400: Given an invalid ID, respond with a 400 bad request.", () => {
       const comment = {
         author: "thebeebop",
@@ -348,7 +335,7 @@ describe("/api", () => {
           expect(response.body.msg).toEqual("Bad Request");
         });
     });
-    test("400: Given a valid articleID that does not exist, respond with a 400 bad request message.", () => {
+    test("404: Given a valid articleID that does not exist, respond with a 404 not found.", () => {
       const comment = {
         author: "thebeebop",
         body: "If you are reading this then you are a... fine example of a human being!",
@@ -356,16 +343,30 @@ describe("/api", () => {
 
       return request(app)
         .post("/api/articles/90/comments")
-        .expect(400)
+        .expect(404)
         .send(comment)
         .then((response) => {
-          expect(response.body.msg).toEqual("Bad Request");
+          expect(response.body.msg).toEqual("Not Found");
+        });
+    });
+    test("404: Username is a valid data-type, but user does not exist in the db.", () => {
+      const comment = {
+        author: "SpagYeti",
+        body: "The Yeti of Spaghetti.",
+      };
+
+      return request(app)
+        .post("/api/articles/10/comments")
+        .expect(404)
+        .send(comment)
+        .then((response) => {
+          expect(response.body.msg).toEqual("Not Found");
         });
     });
   });
 
   describe("GET /api/articles (queries)", () => {
-    test("200: returns an array of articles sorted by comment_count in descending order", () => {
+    test("200: returns articles sorted by comment_count in descending order", () => {
       return request(app)
         .get("/api/articles?sort_by=comment_count")
         .expect(200)
@@ -375,7 +376,7 @@ describe("/api", () => {
           });
         });
     });
-    test("200: returns an array of articles that can be ordered by either asc or desc. ", () => {
+    test("200: returns articles that can be ordered by either asc or desc. ", () => {
       return request(app)
         .get("/api/articles?sort_by=comment_count&order=asc")
         .expect(200)
@@ -385,7 +386,7 @@ describe("/api", () => {
           });
         });
     });
-    test("200: returns an array of articles filtered by the given topic value.", () => {
+    test("200: returns articles filtered by the given topic value.", () => {
       return request(app)
         .get("/api/articles?topic=cats")
         .expect(200)
@@ -396,6 +397,26 @@ describe("/api", () => {
                 title: expect.any(String),
                 topic: "cats",
                 author: expect.any(String),
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+    test("200: Given a valid author, return all articles related to this author", () => {
+      return request(app)
+        .get("/api/articles?author=icellusedkars")
+        .expect(200)
+        .then((response) => {
+          console.log(response.body.articles, "<<<<< articles");
+          response.body.articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                title: expect.any(String),
+                topic: expect.any(String),
+                author: "icellusedkars",
                 body: expect.any(String),
                 created_at: expect.any(String),
                 votes: expect.any(Number),
@@ -434,6 +455,22 @@ describe("/api", () => {
         .expect(404)
         .then((response) => {
           expect(response.body.msg).toEqual("Not Found");
+        });
+    });
+    test("404: Given a valid author value that does not exist in the db, respond with a 404 error", () => {
+      return request(app)
+        .get("/api/articles?author=mario")
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).toEqual("Not Found");
+        });
+    });
+    test("200: Author exists in db but has no articles, respond with an empty array", () => {
+      return request(app)
+        .get("/api/articles?author=lurker")
+        .expect(200)
+        .then((response) => {
+          expect(response.body.articles).toEqual([]);
         });
     });
   });

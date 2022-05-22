@@ -13,10 +13,9 @@ exports.fetchArticles = (query) => {
 
   const ValidOrder = ["asc", "desc"];
 
-  const { sort_by = "created_at", order = "desc", topic } = query;
+  const { sort_by = "created_at", order = "desc", topic, author } = query;
 
-  console.log(sort_by, "<<<< sort_by");
-  console.log(order, "<<<<<< order");
+  console.log(author, "<<<<< author");
   console.log(topic, "<<<<< topic");
 
   //Query Strings
@@ -27,21 +26,24 @@ exports.fetchArticles = (query) => {
   LEFT JOIN comments
   ON comments.article_id = articles.article_id `;
 
-  let queryCond = `
+  let queryTopic = `
   WHERE topic = $1`;
+
+  let queryAuthor = `
+  WHERE articles.author = $1`;
 
   let queryStrTwo = `
   GROUP BY articles.article_id
   `;
 
-  //SORT_BY
+  //SORT_BY VALIDITY CHECKER
   if (validSortBy.includes(sort_by)) {
     queryStrTwo += `ORDER BY ${sort_by}`;
   } else {
     return Promise.reject({ status: 400, msg: "Bad Request" });
   }
 
-  //ORDER
+  //ORDER VALIDITY CHECKER
   if (ValidOrder.includes(order)) {
     if (order === "desc") {
       queryStrTwo += ` DESC`;
@@ -52,29 +54,32 @@ exports.fetchArticles = (query) => {
     return Promise.reject({ status: 400, msg: "Bad Request" });
   }
 
+  // FINAL QUERY STR & VALUES
   let queryVal = [];
-  let finalQueryStr = ``;
+  let finalQueryStr = queryStr + queryStrTwo;
 
+  //TOPIC QUERY
   if (topic !== undefined) {
-    finalQueryStr = queryStr + queryCond + queryStrTwo;
+    finalQueryStr = queryStr + queryTopic + queryStrTwo;
     queryVal.push(topic);
-  } else {
-    finalQueryStr = queryStr + queryStrTwo;
+  }
+  // AUTHOR QUERY
+  if (author !== undefined) {
+    finalQueryStr = queryStr + queryAuthor + queryStrTwo;
+    queryVal.push(author);
   }
 
   console.log(finalQueryStr, "<<<< final query");
 
+  console.log(queryVal, "<<<queryVal");
+
   return db.query(finalQueryStr, queryVal).then((response) => {
-    if (!response.rows.length) {
-      return Promise.reject({ status: 404, msg: "Not Found" });
-    } else {
-      return response.rows;
-    }
+    console.log(response.rows);
+    return response.rows;
   });
 };
 
 exports.fetchArticlebyId = (id) => {
-  console.log(id, "<<<< id");
   return db
     .query(
       `SELECT articles.*,

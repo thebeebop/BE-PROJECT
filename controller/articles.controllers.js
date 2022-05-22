@@ -1,3 +1,4 @@
+const { checkExists } = require("../db/helpers/utils");
 const {
   fetchArticlebyId,
   updateArticleById,
@@ -7,14 +8,36 @@ const {
 } = require("../model/articles.models");
 
 exports.getArticles = (req, res, next) => {
-  const query = req.query;
-  fetchArticles(query)
-    .then((articles) => {
-      res.status(200).send({ articles });
-    })
-    .catch((err) => {
-      next(err);
-    });
+  const { author, topic } = req.query;
+  if (author) {
+    checkExists("users", "username", author)
+      .then(() => {
+        fetchArticles(req.query).then((articles) => {
+          res.status(200).send({ articles });
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  } else if (topic) {
+    checkExists("articles", "topic", topic)
+      .then(() => {
+        fetchArticles(req.query).then((articles) => {
+          res.status(200).send({ articles });
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  } else {
+    fetchArticles(req.query)
+      .then((articles) => {
+        res.status(200).send({ articles });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
 };
 
 exports.getArticleById = (req, res, next) => {
@@ -42,15 +65,15 @@ exports.patchArticleById = (req, res, next) => {
 
 exports.getCommentsByArticleId = (req, res, next) => {
   const articleId = req.params.article_id;
-  fetchArticlebyId(articleId).then(() => {
-    return fetchCommentsByArticleId(articleId)
-      .then((comments) => {
+  fetchArticlebyId(articleId)
+    .then(() => {
+      return fetchCommentsByArticleId(articleId).then((comments) => {
         res.status(200).send({ comments });
-      })
-      .catch((err) => {
-        next(err);
       });
-  });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.postCommentByArticleId = (req, res, next) => {
