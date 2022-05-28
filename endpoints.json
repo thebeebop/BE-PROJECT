@@ -9,8 +9,18 @@
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": [],
+    "exampleResponse": {
+      "users": [{"username": "tickle122",
+        "name": "Tom Tickle",
+        "avatar_url": "'https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953'"}]
+    }
+  },
+
   "GET /api/articles": {
-    "description": "serves an array of all topics",
+    "description": "serves an array of all articles",
     "queries": ["author", "topic", "sort_by", "order"],
     "exampleResponse": {
       "articles": [
@@ -25,15 +35,68 @@
     }
   },
 
-  {
+  "GET /api/articles/:article_id": {
+    "description": "returns an array specified to the article_id given.",
+    "queries": [],
+    "exampleResponse": { "article-40":
+       {
+        "title": "Who are the most followed clubs and players on Instagram?",
+        "topic": "football",
+        "author": "jessjelly",
+        "body": "Manchester United are the UK's most popular club on Instagram, with over 14m people following their account for their latest photos and videos. United's total number of followers is over six million more than second-placed Arsenal (8.1m, while Chelsea are third on the list with 7.7m followers, according to data exclusively compiled for Sky Sports. Instagram has a 500m-strong community, with one in three people on the social media site (around 165m) following a sports account.",
+        "created_at": 1600002120000,
+        "votes": 0
+      }
+      }
+     },
 
+     "PATCH /api/articles/:article_id": {
+       "description": "provides updates to existing articles specified by a valid article_id.",
+       "queries": [],
+       "examplePatch": {"inc_votes": 40 }
+     },
 
+     "GET /api/articles/:article_id/comments": {
+       "description": "returns an array of comments specified by the given article_id",
+       "queries": [],
+       "exampleResponse": {"article-5":[
+        {
+          "body": "Dicta aut quo unde cupiditate dolorum. Voluptas mollitia exercitationem vel porro dolor. Ea autem est pariatur.",
+          "votes": 6,
+          "author": "jessjelly",
+          "article_id": 5,
+          "created_at": 1597515060000,
+        },
+        {
+          "body": "Minus minus sit non fugiat sunt et nostrum aut et. Dignissimos qui nemo quos fuga qui temporibus occaecati aut. Explicabo dolor commodi officia nulla totam inventore.",
+          "votes": -3,
+          "author": "weegembump",
+          "article_id": 5,
+          "created_at": 1590509460000,
+        }
+       ]}
+     },
 
+     "POST /api/articles/:article_id/comments": {
+       "description": "Allows the client to post comments to articles specified by their ID.",
+       "queries": [],
+       "exampleComment":{
+        "author": "thebeebop",
+        "body": "If you are reading this then you are a... fine example of a human being!"
+      }
+      },
 
-
-    
-  }
-
-
-
+      "DELETE /api/comments/:comment_id": {
+        "description": "Allows the client to delete comments specified by their comment_id.",
+        "queries": [],
+        "exampleResponse": {}
+      }
 }
+
+
+
+
+
+
+
+
