@@ -15,9 +15,6 @@ exports.fetchArticles = (query) => {
 
   const { sort_by = "created_at", order = "desc", topic, author } = query;
 
-  console.log(author, "<<<<< author");
-  console.log(topic, "<<<<< topic");
-
   //Query Strings
   let queryStr = `
   SELECT articles.*,
@@ -69,12 +66,7 @@ exports.fetchArticles = (query) => {
     queryVal.push(author);
   }
 
-  console.log(finalQueryStr, "<<<< final query");
-
-  console.log(queryVal, "<<<queryVal");
-
   return db.query(finalQueryStr, queryVal).then((response) => {
-    console.log(response.rows);
     return response.rows;
   });
 };
@@ -92,7 +84,6 @@ exports.fetchArticlebyId = (id) => {
       [id]
     )
     .then((response) => {
-
       if (response.rows.length === 0) {
         return Promise.reject({ status: 404, msg: "Not Found" });
       } else {
@@ -120,7 +111,6 @@ exports.updateArticleById = (id, updateVoteBy) => {
 };
 
 exports.fetchCommentsByArticleId = (articleId) => {
-
   return db
     .query(
       `SELECT * FROM comments
@@ -131,7 +121,6 @@ exports.fetchCommentsByArticleId = (articleId) => {
       return comments.rows;
     });
 };
-
 
 exports.addComment = (articleId, comment) => {
   const { body, author } = comment;
@@ -148,4 +137,3 @@ exports.addComment = (articleId, comment) => {
       return response.rows[0];
     });
 };
-

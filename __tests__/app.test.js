@@ -34,7 +34,6 @@ describe("/api", () => {
         .expect(404)
         .then((response) => {
           expect(response.body.msg).toBe("Not Found");
-
         });
     });
   });
@@ -67,7 +66,6 @@ describe("/api", () => {
         });
     });
 
-
     test("400: Given an invalid data-type, send the client a 400 bad request.", () => {
       return request(app)
         .get("/api/articles/silly")
@@ -82,7 +80,6 @@ describe("/api", () => {
         .expect(404)
         .then((response) => {
           expect(response.body.msg).toEqual("Not Found");
-
         });
     });
   });
@@ -257,7 +254,6 @@ describe("/api", () => {
         });
     });
 
-
     test('400: Given an incorrect data type, return message "Bad Request', () => {
       return request(app)
         .get("/api/articles/kingkong/comments")
@@ -414,7 +410,6 @@ describe("/api", () => {
         .get("/api/articles?author=icellusedkars")
         .expect(200)
         .then((response) => {
-          console.log(response.body.articles, "<<<<< articles");
           response.body.articles.forEach((article) => {
             expect(article).toEqual(
               expect.objectContaining({
@@ -475,6 +470,33 @@ describe("/api", () => {
         .expect(200)
         .then((response) => {
           expect(response.body.articles).toEqual([]);
+        });
+    });
+  });
+
+  describe("DELETE /api/comments/:comment_id", () => {
+    test("204: Comment successfully deleted by selected ID.", () => {
+      return request(app)
+        .delete("/api/comments/3")
+        .expect(204)
+        .then((response) => {
+          expect(response.body).toEqual({});
+        });
+    });
+    test("400: Given an invalid ID data-type, respond with a 400 bad request.", () => {
+      return request(app)
+        .delete("/api/comments/donkey")
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).toEqual("Bad Request");
+        });
+    });
+    test("404: Given a valid ID that does not exist in db, respond with a 404.", () => {
+      return request(app)
+        .delete("/api/comments/99999999")
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).toEqual("Not Found");
         });
     });
   });
