@@ -500,4 +500,27 @@ describe("/api", () => {
         });
     });
   });
+  describe("GET /api", () => {
+    test("200: Responds with a JSON object including descriptions of all available endpoints for this API", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .expect("Content-Type", "application/json; charset=utf-8")
+        .then((response) => {
+          let Json = response.body.endpointsJSON;
+          expect(Json).toBeInstanceOf(Object);
+          expect(Object.keys(Json)).toEqual([
+            "GET /api",
+            "GET /api/topics",
+            "GET /api/users",
+            "GET /api/articles",
+            "GET /api/articles/:article_id",
+            "PATCH /api/articles/:article_id",
+            "GET /api/articles/:article_id/comments",
+            "POST /api/articles/:article_id/comments",
+            "DELETE /api/comments/:comment_id",
+          ]);
+        });
+    });
+  });
 });
