@@ -501,7 +501,7 @@ describe("/api", () => {
     });
   });
   describe("GET /api", () => {
-    test.only("200: Responds with a JSON object including descriptions of all available endpoints for this API", () => {
+    test("200: Responds with a JSON object including descriptions of all available endpoints for this API", () => {
       return request(app)
         .get("/api")
         .expect(200)
