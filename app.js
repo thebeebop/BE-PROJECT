@@ -9,10 +9,13 @@ const {
 } = require("./controller/articles.controllers.js");
 const { getUsers } = require("./controller/users.controllers");
 const { deleteCommentById } = require("./controller/comments.articles");
+const { getApi } = require("./controller/api.controller");
 
 const app = express();
 
 app.use(express.json());
+
+app.get("/api", getApi);
 
 app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticleById);
