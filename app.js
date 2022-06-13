@@ -10,8 +10,10 @@ const {
 const { getUsers } = require("./controller/users.controllers");
 const { deleteCommentById } = require("./controller/comments.articles");
 const { getApi } = require("./controller/api.controller");
-
 const app = express();
+const cors = require("cors");
+
+app.use(cors());
 
 app.use(express.json());
 
