@@ -232,7 +232,7 @@ describe("/api", () => {
   });
 
   describe("GET /api/articles/:article_id/comments", () => {
-    test("200: Returns an array of comments for the given article_id. ", () => {
+    test.only("200: Returns an array of comments for the given article_id. ", () => {
       return request(app)
         .get("/api/articles/5/comments")
         .expect(200)

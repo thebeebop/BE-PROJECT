@@ -114,8 +114,7 @@ exports.fetchCommentsByArticleId = (articleId) => {
   return db
     .query(
       `SELECT * FROM comments
-         WHERE article_id = $1
-         ORDER BY DESC`,
+         WHERE article_id = $1`,
       [articleId]
     )
     .then((comments) => {
