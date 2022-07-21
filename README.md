@@ -6,6 +6,14 @@ This is an API created in Javascript using express.js, postgreSQL & PSQL as part
 
 
 
+# Link to API
+https://nc-info-site.herokuapp.com/api
+
+
+
+
+
+
 
 
 
