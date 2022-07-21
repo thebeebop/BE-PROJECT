@@ -1,4 +1,4 @@
-# NC news API
+# NC News API
 This is an API created in Javascript using express.js, postgreSQL & PSQL
 
 
