@@ -1,5 +1,5 @@
 # NC News API
-This is an API created in Javascript using express.js, postgreSQL & PSQL
+This is an API created in Javascript using express.js, postgreSQL & PSQL as part of the Northcoder's 'back-end project phase'. 
 
 
 
