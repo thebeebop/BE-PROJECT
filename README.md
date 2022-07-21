@@ -1,3 +1,30 @@
+# NC news API
+This is an API created in Javascript using express.js, postgreSQL & PSQL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## IMPORTANT ------------------------------------------
 
 ## .env files
