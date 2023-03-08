@@ -10,11 +10,12 @@ afterAll(() => db.end());
 
 describe("/api", () => {
   describe("GET /api/topics", () => {
-    test("200: Returns an array of topic objects with the following properties: slug, description.", () => {
+    test.only("200: Returns an array of topic objects with the following properties: slug, description.", () => {
       return request(app)
         .get("/api/topics")
         .expect(200)
         .then((res) => {
+          console.log(res.body);
           expect(res.body.topics).toBeInstanceOf(Array);
           expect(res.body.topics.length).toBe(3);
 
@@ -232,7 +233,7 @@ describe("/api", () => {
   });
 
   describe("GET /api/articles/:article_id/comments", () => {
-    test.only("200: Returns an array of comments for the given article_id. ", () => {
+    test("200: Returns an array of comments for the given article_id. ", () => {
       return request(app)
         .get("/api/articles/5/comments")
         .expect(200)
